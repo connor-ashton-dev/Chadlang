@@ -1,5 +1,1 @@
-# Monkey Compiler
-
-### Lexer
-
-Takes source code as input and outputs the tokens that represent the source code.
+Stopped at page 71 section 2.7

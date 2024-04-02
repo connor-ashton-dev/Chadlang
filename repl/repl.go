@@ -5,27 +5,70 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/connor-ashton-dev/monkey/lexer"
-	"github.com/connor-ashton-dev/monkey/token"
+	"github.com/connor-ashton-dev/chad/lexer"
+	"github.com/connor-ashton-dev/chad/parser"
 )
 
 const PROMPT = ">> "
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+
 	for {
-		fmt.Fprint(out, PROMPT)
+		fmt.Fprintf(out, PROMPT)
 		scanned := scanner.Scan()
 		if !scanned {
+			fmt.Println("didn't scan")
 			return
 		}
 
 		line := scanner.Text()
 		l := lexer.New(line)
-		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
-			fmt.Fprintf(out, "%+v\n", tok)
-		}
-		fmt.Println()
+		p := parser.New(l)
 
+		program := p.ParseProgram()
+		if len(p.Errors()) != 0 {
+			printParserErrors(out, p.Errors())
+			continue
+		}
+
+		_, err := io.WriteString(out, program.String())
+		if err != nil {
+			return
+		}
+		_, err = io.WriteString(out, "\n")
+		if err != nil {
+			return
+		}
+	}
+}
+
+const CHAD_FACE = ` 
+
+   .------\ /------.
+   |       -       |
+   |               |
+   |               |
+   |               |
+_______________________
+===========.===========
+  / ~~~~~     ~~~~~ \
+ /|     |     |\
+ W   ---  / \  ---   W
+ \.      |o o|      ./
+  |                 |
+  \    #########    /
+   \  ## ----- ##  /
+    \##         ##/
+     \_____v_____/
+
+`
+
+func printParserErrors(out io.Writer, errors []string) {
+	io.WriteString(out, CHAD_FACE)
+	io.WriteString(out, "Shnikey! We ran into some errors here!\n")
+	io.WriteString(out, " parser errors:\n")
+	for _, msg := range errors {
+		io.WriteString(out, "\t"+msg+"\n")
 	}
 }
