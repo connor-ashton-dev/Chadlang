@@ -100,13 +100,13 @@ func TestFunctionLiteralParsing(t *testing.T) {
 	testLiteralExpression(t, function.Parameters[0], "x")
 	testLiteralExpression(t, function.Parameters[1], "y")
 
-	if len(function.Body.Statments) != 1 {
-		t.Fatalf("function.Body.Statements has not 1 statement. Got=%d", len(function.Body.Statments))
+	if len(function.Body.Statements) != 1 {
+		t.Fatalf("function.Body.Statements has not 1 statement. Got=%d", len(function.Body.Statements))
 	}
 
-	bodyStmt, ok := function.Body.Statments[0].(*ast.ExpressionStatement)
+	bodyStmt, ok := function.Body.Statements[0].(*ast.ExpressionStatement)
 	if !ok {
-		t.Fatalf("function body statement is not ast.ExpressionStatement. Got=%T", function.Body.Statments[0])
+		t.Fatalf("function body statement is not ast.ExpressionStatement. Got=%T", function.Body.Statements[0])
 	}
 
 	testInfixExpression(t, bodyStmt.Expression, "x", "+", "y")
@@ -138,13 +138,13 @@ func TestIfExpression(t *testing.T) {
 		return
 	}
 
-	if len(exp.Consequence.Statments) != 1 {
-		t.Errorf("consequence is not 1 statement. Got=%d", len(exp.Consequence.Statments))
+	if len(exp.Consequence.Statements) != 1 {
+		t.Errorf("consequence is not 1 statement. Got=%d", len(exp.Consequence.Statements))
 	}
 
-	consequence, ok := exp.Consequence.Statments[0].(*ast.ExpressionStatement)
+	consequence, ok := exp.Consequence.Statements[0].(*ast.ExpressionStatement)
 	if !ok {
-		t.Fatalf("Statements[0] is not ast.ExpressionStatement. Got=%T", exp.Consequence.Statments[0])
+		t.Fatalf("Statements[0] is not ast.ExpressionStatement. Got=%T", exp.Consequence.Statements[0])
 	}
 
 	if !testIdentifier(t, consequence.Expression, "x") {
@@ -182,26 +182,26 @@ func TestIfElseExpression(t *testing.T) {
 		return
 	}
 
-	if len(exp.Consequence.Statments) != 1 {
-		t.Errorf("consequence is not 1 statement. Got=%d", len(exp.Consequence.Statments))
+	if len(exp.Consequence.Statements) != 1 {
+		t.Errorf("consequence is not 1 statement. Got=%d", len(exp.Consequence.Statements))
 	}
 
-	consequence, ok := exp.Consequence.Statments[0].(*ast.ExpressionStatement)
+	consequence, ok := exp.Consequence.Statements[0].(*ast.ExpressionStatement)
 	if !ok {
-		t.Fatalf("Statements[0] is not ast.ExpressionStatement. Got=%T", exp.Consequence.Statments[0])
+		t.Fatalf("Statements[0] is not ast.ExpressionStatement. Got=%T", exp.Consequence.Statements[0])
 	}
 
 	if !testIdentifier(t, consequence.Expression, "x") {
 		return
 	}
 
-	if len(exp.Alternative.Statments) != 1 {
-		t.Errorf("alternative is not 1 statement. Got=%d", len(exp.Alternative.Statments))
+	if len(exp.Alternative.Statements) != 1 {
+		t.Errorf("alternative is not 1 statement. Got=%d", len(exp.Alternative.Statements))
 	}
 
-	alternative, ok := exp.Alternative.Statments[0].(*ast.ExpressionStatement)
+	alternative, ok := exp.Alternative.Statements[0].(*ast.ExpressionStatement)
 	if !ok {
-		t.Fatalf("Statements[0] is not ast.ExpressionStatement. Got=%T", exp.Alternative.Statments[0])
+		t.Fatalf("Statements[0] is not ast.ExpressionStatement. Got=%T", exp.Alternative.Statements[0])
 	}
 
 	if !testIdentifier(t, alternative.Expression, "y") {

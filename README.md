@@ -1,1 +1,1 @@
-Stopped at page 71 section 2.7
+stopped at true page 107 chapter 3.3

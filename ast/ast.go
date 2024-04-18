@@ -196,14 +196,14 @@ func (ie *IFExpression) expressionNode()      {}
 func (ie *IFExpression) TokenLiteral() string { return ie.Token.Literal }
 
 type BlockStatement struct {
-	Token     token.Token // the { token
-	Statments []Statement
+	Token      token.Token // the { token
+	Statements []Statement
 }
 
 func (bs *BlockStatement) String() string {
 	var out bytes.Buffer
 
-	for _, s := range bs.Statments {
+	for _, s := range bs.Statements {
 		out.WriteString(s.String())
 	}
 

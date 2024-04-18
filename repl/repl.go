@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/connor-ashton-dev/chad/evaluator"
 	"github.com/connor-ashton-dev/chad/lexer"
+	"github.com/connor-ashton-dev/chad/object"
 	"github.com/connor-ashton-dev/chad/parser"
 )
 
@@ -13,6 +15,7 @@ const PROMPT = ">> "
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+	env := object.NewEnvironment()
 
 	for {
 		fmt.Fprintf(out, PROMPT)
@@ -32,13 +35,17 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		_, err := io.WriteString(out, program.String())
-		if err != nil {
-			return
-		}
-		_, err = io.WriteString(out, "\n")
-		if err != nil {
-			return
+		evaluated := evaluator.Eval(program, env)
+
+		if evaluated != nil {
+			_, err := io.WriteString(out, evaluated.Inspect())
+			if err != nil {
+				return
+			}
+			_, err = io.WriteString(out, "\n")
+			if err != nil {
+				return
+			}
 		}
 	}
 }
